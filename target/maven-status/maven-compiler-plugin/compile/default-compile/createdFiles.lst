@@ -1,0 +1,4 @@
+com/timjstewart/domain/User.class
+com/timjstewart/controller/UserController.class
+com/timjstewart/Application.class
+com/timjstewart/repository/UserRepository.class
