@@ -1,56 +1,46 @@
 package com.timjstewart.controller;
 
+import com.timjstewart.configuration.RepositoryConfiguration;
 import com.timjstewart.domain.Car;
 import com.timjstewart.domain.Rating;
 import com.timjstewart.domain.User;
 import com.timjstewart.repository.CarRepository;
 import com.timjstewart.repository.RatingRepository;
 import com.timjstewart.repository.UserRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
-public class RatingControllerTest {
-
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+public class RatingControllerTest
+{
     @Autowired
     private RatingRepository repository;
     @Autowired
     private CarRepository carRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TestRestTemplate template;
 
-    private Car car;
-    private User user;
-
-    @Before
-    public void setUp() {
-        car = carRepository.save(new Car(1984, "Honda"));
-        user = userRepository.save(new User("Bill"));
-    }
-
     @Test
-    public void canCreateRating() {
+    public void canCreateRating()
+    {
         // Arrange
+        Car car = carRepository.save(new Car(1984, "Honda"));
+        User user = userRepository.save(new User("Bill"));
+
         final Rating rating = new Rating(3);
 
-        final Rating created = template.postForObject(RatingController.ROUTE_SINGLE, rating, Rating.class,
+        final Rating created =
+            template.postForObject(RatingController.ROUTE_SINGLE, rating, Rating.class,
                 car.getUuid(), user.getUuid());
 
         // Act
@@ -63,15 +53,16 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void canDeleteRating() {
+    public void canDeleteRating()
+    {
         // Arrange
         final Rating rating = new Rating(3);
-        rating.setUser(user);
-        rating.setCar(car);
+        rating.setUser(new User("Bill"));
+        rating.setCar(new Car(1984, "Honda"));
         final Rating created = repository.save(rating);
 
         // Act
-        template.delete(RatingController.ROUTE_SINGLE, created.getUuid());
+        template.delete(RatingController.ROUTE_SINGLE, created.getCar().getUuid(), created.getUser().getUuid());
 
         // Assert
         final Rating found = repository.findOne(created.getUuid());
@@ -79,31 +70,37 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void canGetRating() {
+    public void canGetRating()
+    {
         // Arrange
         final Rating rating = new Rating(3);
-        rating.setUser(user);
-        rating.setCar(car);
+        rating.setUser(new User("Bill"));
+        rating.setCar(new Car(1984, "Honda"));
+
         final Rating created = repository.save(rating);
 
         // Act
-        final Rating found = template.getForObject(RatingController.ROUTE_SINGLE, Rating.class, created.getUuid());
+        final Rating found = template
+            .getForObject(RatingController.ROUTE_SINGLE, Rating.class, created.getCar().getUuid(),
+                created.getUser().getUuid());
 
         // Assert
         assertThat(found).isNotNull();
     }
 
     @Test
-    public void canUpdateRating() {
+    public void canUpdateRating()
+    {
         // Arrange
+        Car car = carRepository.save(new Car(1984, "Honda"));
+        User user = userRepository.save(new User("Bill"));
+
         final Rating rating = new Rating(3);
-        rating.setUser(user);
-        rating.setCar(car);
         final Rating created = repository.save(rating);
 
         // Act
         rating.setStars(4);
-        template.put(RatingController.ROUTE_SINGLE, created, created.getUuid());
+        template.put(RatingController.ROUTE_SINGLE, created, car.getUuid(), user.getUuid());
 
         // Assert
         final Rating found = repository.findOne(created.getUuid());

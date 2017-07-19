@@ -58,7 +58,8 @@ public class RatingController {
     @RequestMapping(path = ROUTE_SINGLE, method = RequestMethod.DELETE)
     public HttpEntity<Void> deleteOne(@PathVariable UUID carId, @PathVariable UUID userId) {
         try {
-            repository.deleteByCarUuidAndUserUuid(carId, userId);
+            Rating rating = repository.findByCarUuidAndUserUuid(carId, userId);
+            repository.delete(rating.getUuid());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (EmptyResultDataAccessException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
