@@ -1,8 +1,7 @@
 package com.timjstewart.utility;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import com.timjstewart.domain.Car;
+
 import java.util.ArrayList;
 
 public class CarPage

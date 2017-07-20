@@ -9,6 +9,7 @@ public class RatedCar
 
     protected RatedCar()
     {
+        // Required by Hibernate/Jackson
     }
 
     public RatedCar(final Car car, int ratings)

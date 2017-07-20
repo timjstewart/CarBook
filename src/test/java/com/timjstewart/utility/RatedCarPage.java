@@ -1,6 +1,5 @@
 package com.timjstewart.utility;
 
-import com.timjstewart.domain.Car;
 import com.timjstewart.domain.RatedCar;
 
 import java.util.ArrayList;

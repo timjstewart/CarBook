@@ -2,20 +2,20 @@ package com.timjstewart.controller;
 
 import com.timjstewart.domain.User;
 import com.timjstewart.repository.UserRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
-public class UserControllerTest {
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+public class UserControllerTest
+{
 
     @Autowired
     private UserRepository repository;
@@ -24,9 +24,11 @@ public class UserControllerTest {
     private TestRestTemplate template;
 
     @Test
-    public void canCreateUser() {
+    public void canCreateUser()
+    {
         // Arrange
-        final User created = template.postForObject(UserController.ROUTE_COLLECTIVE, new User("Fred"), User.class);
+        final User created =
+            template.postForObject(UserController.ROUTE_COLLECTIVE, new User("Fred"), User.class);
 
         // Act
         final User found = repository.findOne(created.getUuid());
@@ -37,7 +39,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void canDeleteUser() {
+    public void canDeleteUser()
+    {
         // Arrange
         final User created = repository.save(new User("Fred"));
 
@@ -50,12 +53,14 @@ public class UserControllerTest {
     }
 
     @Test
-    public void canGetUser() {
+    public void canGetUser()
+    {
         // Arrange
         final User created = repository.save(new User("Fred"));
 
         // Act
-        final User found = template.getForObject(UserController.ROUTE_SINGLE, User.class, created.getUuid());
+        final User found =
+            template.getForObject(UserController.ROUTE_SINGLE, User.class, created.getUuid());
 
         // Assert
         assertThat(found).isNotNull();
@@ -63,7 +68,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void canUpdateUser() {
+    public void canUpdateUser()
+    {
         // Arrange
         final User created = repository.save(new User("Fred"));
 

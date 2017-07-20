@@ -2,11 +2,6 @@ package com.timjstewart.controller;
 
 import com.timjstewart.domain.User;
 import com.timjstewart.repository.UserRepository;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.UUID;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -48,13 +47,13 @@ public class UserController
     public HttpEntity<User> getOne(@PathVariable UUID id)
     {
         final User user = repository.findOne(id);
-        if (user != null)
+        if (user == null)
         {
-            return new ResponseEntity<>(addLinks(user), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else
         {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(addLinks(user), HttpStatus.OK);
         }
     }
 
@@ -100,7 +99,8 @@ public class UserController
     private HttpHeaders getCreatedHeaders(final User user) throws URISyntaxException
     {
         final HttpHeaders responseHeaders = new HttpHeaders();
-        final Link location = linkTo(methodOn(UserController.class).getOne(user.getUuid())).withSelfRel();
+        final Link location =
+            linkTo(methodOn(UserController.class).getOne(user.getUuid())).withSelfRel();
         responseHeaders.setLocation(new URI(location.getHref()));
         return responseHeaders;
     }

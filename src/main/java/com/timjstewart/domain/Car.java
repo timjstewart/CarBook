@@ -20,6 +20,7 @@ public class Car extends ResourceSupport
 
     protected Car()
     {
+        // Required by Hibernate
     }
 
     public Car(Car car)

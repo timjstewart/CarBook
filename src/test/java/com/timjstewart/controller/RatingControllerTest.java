@@ -7,7 +7,6 @@ import com.timjstewart.repository.CarRepository;
 import com.timjstewart.repository.RatingRepository;
 import com.timjstewart.repository.UserRepository;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RatingControllerTest
@@ -30,8 +27,6 @@ public class RatingControllerTest
     private CarRepository carRepository;
     @Autowired
     private UserRepository userRepository;
-
-
 
     @Autowired
     private TestRestTemplate template;

@@ -1,10 +1,9 @@
 package com.timjstewart.repository;
 
-import java.util.UUID;
-
+import com.timjstewart.domain.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.timjstewart.domain.User;
+import java.util.UUID;
 
 public interface UserRepository extends PagingAndSortingRepository<User, UUID>
 {

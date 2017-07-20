@@ -1,12 +1,11 @@
 package com.timjstewart.repository;
 
-import java.util.UUID;
-
+import com.timjstewart.domain.Car;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.timjstewart.domain.Car;
+import java.util.UUID;
 
 public interface CarRepository extends PagingAndSortingRepository<Car, UUID>
 {

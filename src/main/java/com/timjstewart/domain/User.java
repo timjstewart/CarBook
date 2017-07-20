@@ -2,12 +2,12 @@ package com.timjstewart.domain;
 
 import org.springframework.hateoas.ResourceSupport;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
@@ -15,9 +15,16 @@ import java.util.UUID;
 public class User extends ResourceSupport
 {
     UUID uuid;
+    private String name;
 
     protected User()
     {
+        // Required by Hibernate/Jackson
+    }
+
+    public User(String name)
+    {
+        this.name = name;
     }
 
     @Id
@@ -33,18 +40,14 @@ public class User extends ResourceSupport
         this.uuid = uuid;
     }
 
-    private String name;
-
-    public User(String name) {
-        this.name = name;
-    }
-
-    @Column(nullable=false)
-    public String getName() {
+    @Column(nullable = false)
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 }

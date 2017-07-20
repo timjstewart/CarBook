@@ -3,11 +3,6 @@ package com.timjstewart.controller;
 import com.timjstewart.domain.Car;
 import com.timjstewart.domain.RatedCar;
 import com.timjstewart.repository.CarRepository;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.UUID;
-
 import com.timjstewart.repository.RatingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +23,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.UUID;
+
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -46,8 +45,8 @@ public class CarController
     private RatingRepository ratingRepository;
 
     @RequestMapping(path = ROUTE_COLLECTIVE, method = RequestMethod.GET)
-    public Page<RatedCar> getMany(@RequestParam(name="year", required=false) Integer year,
-                             Pageable pageable)
+    public Page<RatedCar> getMany(@RequestParam(name = "year", required = false) Integer year,
+                                  Pageable pageable)
     {
         if (year == null)
         {
@@ -63,14 +62,14 @@ public class CarController
     public HttpEntity<RatedCar> getOne(@PathVariable UUID id)
     {
         final Car car = repository.findOne(id);
-        if (car != null)
+        if (car == null)
         {
-            int ratings = ratingRepository.countByCarUuid(car.getUuid());
-            return new ResponseEntity<RatedCar>(new RatedCar(addLinks(car), ratings), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else
         {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(addRatings(addLinks(car)),
+                HttpStatus.OK);
         }
     }
 
@@ -126,7 +125,8 @@ public class CarController
     private HttpHeaders getCreatedHeaders(final Car car) throws URISyntaxException
     {
         final HttpHeaders responseHeaders = new HttpHeaders();
-        final Link location = linkTo(methodOn(CarController.class).getOne(car.getUuid())).withSelfRel();
+        final Link location =
+            linkTo(methodOn(CarController.class).getOne(car.getUuid())).withSelfRel();
         responseHeaders.setLocation(new URI(location.getHref()));
         return responseHeaders;
     }
