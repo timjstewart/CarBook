@@ -1,26 +1,40 @@
 package com.timjstewart.domain;
 
-public class RatedCar {
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
+public class RatedCar
+{
     private Car car;
-    private float averageRating;
+    private int ratings;
 
-    public RatedCar() {
+    protected RatedCar()
+    {
     }
 
-    public Car getCar() {
+    public RatedCar(final Car car, int ratings)
+    {
+        this.car = car;
+        this.ratings = ratings;
+    }
+
+    @JsonUnwrapped
+    public Car getCar()
+    {
         return car;
     }
 
-    public void setCar(Car car) {
+    public void setCar(final Car car)
+    {
         this.car = car;
     }
 
-    public float getAverageRating() {
-        return averageRating;
+    public int getRatings()
+    {
+        return ratings;
     }
 
-    public void setAverageRating(float averageRating) {
-        this.averageRating = averageRating;
+    public void setRatings(final int ratings)
+    {
+        this.ratings = ratings;
     }
 }

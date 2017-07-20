@@ -42,7 +42,7 @@ public class Rating extends ResourceSupport {
         this.stars = stars;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="car_uuid")
     public Car getCar() {
         return car;
@@ -52,7 +52,7 @@ public class Rating extends ResourceSupport {
         this.car = car;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="user_uuid")
     public User getUser() {
         return user;

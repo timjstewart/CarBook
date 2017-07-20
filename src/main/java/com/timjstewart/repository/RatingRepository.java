@@ -12,6 +12,7 @@ public interface RatingRepository extends PagingAndSortingRepository<Rating, UUI
 {
     Rating findByCarUuidAndUserUuid(UUID carUuid, UUID userUuid);
     Page<Rating> findByCarUuid(UUID carUuid, Pageable pageable);
+    int countByCarUuid(UUID carUUid);
 }
 
 

@@ -1,12 +1,14 @@
 package com.timjstewart.controller;
 
 import com.timjstewart.domain.Car;
+import com.timjstewart.domain.RatedCar;
 import com.timjstewart.repository.CarRepository;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
+import com.timjstewart.repository.RatingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +20,19 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
+@CrossOrigin
 public class CarController
 {
     static final String ROUTE_COLLECTIVE = "/cars";
@@ -37,20 +42,31 @@ public class CarController
 
     @Autowired
     private CarRepository repository;
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @RequestMapping(path = ROUTE_COLLECTIVE, method = RequestMethod.GET)
-    public Page<Car> getMany(Pageable pageable)
+    public Page<RatedCar> getMany(@RequestParam(name="year", required=false) Integer year,
+                             Pageable pageable)
     {
-        return addLinks(repository.findAll(pageable));
+        if (year == null)
+        {
+            return addRatings(addLinks(repository.findAll(pageable)));
+        }
+        else
+        {
+            return addRatings(addLinks(repository.findAllByYear(year, pageable)));
+        }
     }
 
     @RequestMapping(path = ROUTE_SINGLE, method = RequestMethod.GET)
-    public HttpEntity<Car> getOne(@PathVariable UUID id)
+    public HttpEntity<RatedCar> getOne(@PathVariable UUID id)
     {
         final Car car = repository.findOne(id);
         if (car != null)
         {
-            return new ResponseEntity<>(addLinks(car), HttpStatus.OK);
+            int ratings = ratingRepository.countByCarUuid(car.getUuid());
+            return new ResponseEntity<RatedCar>(new RatedCar(addLinks(car), ratings), HttpStatus.OK);
         }
         else
         {
@@ -95,6 +111,16 @@ public class CarController
     {
         car.add(linkTo(methodOn(CarController.class).getOne(car.getUuid())).withSelfRel());
         return car;
+    }
+
+    private RatedCar addRatings(final Car car)
+    {
+        return new RatedCar(car, ratingRepository.countByCarUuid(car.getUuid()));
+    }
+
+    private Page<RatedCar> addRatings(Page<Car> cars)
+    {
+        return cars.map(this::addRatings);
     }
 
     private HttpHeaders getCreatedHeaders(final Car car) throws URISyntaxException

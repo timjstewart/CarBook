@@ -1,12 +1,13 @@
 package com.timjstewart.controller;
 
-import com.timjstewart.configuration.RepositoryConfiguration;
 import com.timjstewart.domain.Car;
 import com.timjstewart.domain.Rating;
 import com.timjstewart.domain.User;
 import com.timjstewart.repository.CarRepository;
 import com.timjstewart.repository.RatingRepository;
 import com.timjstewart.repository.UserRepository;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
@@ -27,8 +30,19 @@ public class RatingControllerTest
     private CarRepository carRepository;
     @Autowired
     private UserRepository userRepository;
+
+
+
     @Autowired
     private TestRestTemplate template;
+
+    @After
+    public void setUp()
+    {
+//        repository.deleteAll();
+//        carRepository.deleteAll();
+//        userRepository.deleteAll();
+    }
 
     @Test
     public void canCreateRating()
@@ -56,13 +70,16 @@ public class RatingControllerTest
     public void canDeleteRating()
     {
         // Arrange
+        final User user = userRepository.save(new User("Bill"));
+        final Car car = carRepository.save(new Car(1984, "Honda"));
         final Rating rating = new Rating(3);
-        rating.setUser(new User("Bill"));
-        rating.setCar(new Car(1984, "Honda"));
+        rating.setUser(user);
+        rating.setCar(car);
         final Rating created = repository.save(rating);
 
         // Act
-        template.delete(RatingController.ROUTE_SINGLE, created.getCar().getUuid(), created.getUser().getUuid());
+        template.delete(RatingController.ROUTE_SINGLE,
+            created.getCar().getUuid(), created.getUser().getUuid());
 
         // Assert
         final Rating found = repository.findOne(created.getUuid());
@@ -74,8 +91,8 @@ public class RatingControllerTest
     {
         // Arrange
         final Rating rating = new Rating(3);
-        rating.setUser(new User("Bill"));
-        rating.setCar(new Car(1984, "Honda"));
+        rating.setUser(userRepository.save(new User("Bill")));
+        rating.setCar(carRepository.save(new Car(1984, "Honda")));
 
         final Rating created = repository.save(rating);
 
