@@ -34,9 +34,9 @@ public class RatingControllerTest
     @After
     public void setUp()
     {
-        repository.deleteAll();
-        carRepository.deleteAll();
-        userRepository.deleteAll();
+//        repository.deleteAll();
+//        carRepository.deleteAll();
+//        userRepository.deleteAll();
     }
 
     @Test

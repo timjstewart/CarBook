@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RatingRepositoryTest
 {
-
     @Autowired
     private RatingRepository repository;
 
@@ -26,18 +25,6 @@ public class RatingRepositoryTest
 
     @Autowired
     private UserRepository userRepository;
-
-    @Before
-    public void setUp()
-    {
-        repository.deleteAll();
-    }
-
-    @After
-    public void tearDown()
-    {
-        repository.deleteAll();
-    }
 
     @Test
     public void canCreateRating()

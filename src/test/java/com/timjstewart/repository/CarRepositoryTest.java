@@ -18,12 +18,6 @@ public class CarRepositoryTest
     @Autowired
     private CarRepository repository;
 
-    @Before
-    public void setUp()
-    {
-        repository.deleteAll();
-    }
-
     @Test
     public void canCreateCar()
     {

@@ -17,12 +17,6 @@ public class UserRepositoryTest
     @Autowired
     private UserRepository repository;
 
-    @Before
-    public void setUp()
-    {
-        repository.deleteAll();
-    }
-
     @Test
     public void canCreateUser()
     {

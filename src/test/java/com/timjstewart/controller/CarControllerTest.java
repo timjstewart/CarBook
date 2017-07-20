@@ -18,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -39,9 +41,9 @@ public class CarControllerTest
     @Before
     public void setUp()
     {
-        ratingRepository.deleteAll();
-        repository.deleteAll();
-        userRepository.deleteAll();
+//        ratingRepository.deleteAll();
+//        repository.deleteAll();
+//        userRepository.deleteAll();
     }
 
     @Test
@@ -154,6 +156,7 @@ public class CarControllerTest
         // Arrange
         final Car car = repository.save(new Car(1973, "Ford"));
         final User user = userRepository.save(new User("Barney"));
+
         final Rating rating = new Rating(3);
         rating.setCar(car);
         rating.setUser(user);
@@ -165,8 +168,11 @@ public class CarControllerTest
                 RatedCarPage.class);
 
         // Assert
-        assertThat(cars.getContent().size()).isEqualTo(1);
-        assertThat(cars.getContent().get(0).getRatings()).isEqualTo(1);
+        // Find the car we just added.
+        final Optional<RatedCar> ratedCar = cars.getContent().stream()
+            .filter(x -> x.getCar().getUuid().equals(car.getUuid())).findFirst();
+        assertThat(ratedCar.isPresent());
+        assertThat(ratedCar.get().getRatings()).isEqualTo(1);
     }
 }
 
