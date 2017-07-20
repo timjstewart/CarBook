@@ -1,7 +1,6 @@
 package com.timjstewart.repository;
 
 import com.timjstewart.domain.Car;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

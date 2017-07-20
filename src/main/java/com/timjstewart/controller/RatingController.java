@@ -38,12 +38,19 @@ public class RatingController
 
     private static Logger LOG = LoggerFactory.getLogger(RatingController.class);
 
-    @Autowired
     private RatingRepository repository;
-    @Autowired
     private CarRepository carRepository;
-    @Autowired
     private UserRepository userRepository;
+
+    protected RatingController(
+        final RatingRepository repository,
+        final CarRepository carRepository,
+        final UserRepository userRepository)
+    {
+        this.repository = repository;
+        this.carRepository = carRepository;
+        this.userRepository = userRepository;
+    }
 
     @RequestMapping(path = ROUTE_COLLECTIVE, method = RequestMethod.GET)
     public Page<Rating> getMany(@PathVariable UUID carId, Pageable pageable)

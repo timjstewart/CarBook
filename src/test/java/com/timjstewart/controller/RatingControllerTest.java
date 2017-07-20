@@ -6,7 +6,6 @@ import com.timjstewart.domain.User;
 import com.timjstewart.repository.CarRepository;
 import com.timjstewart.repository.RatingRepository;
 import com.timjstewart.repository.UserRepository;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ public class RatingControllerTest
     private CarRepository carRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TestRestTemplate template;
 

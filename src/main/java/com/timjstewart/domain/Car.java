@@ -23,11 +23,6 @@ public class Car extends ResourceSupport
         // Required by Hibernate
     }
 
-    public Car(Car car)
-    {
-        add(car.getLinks());
-    }
-
     public Car(int year, String make)
     {
         this.make = make;

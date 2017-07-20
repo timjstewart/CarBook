@@ -1,9 +1,12 @@
 package com.timjstewart.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -64,6 +67,7 @@ public class Rating extends ResourceSupport
     @ManyToOne(optional = false)
     @JoinColumn(name = "car_uuid",
         foreignKey = @ForeignKey(name = "CAR_UUID_FK"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Car getCar()
     {
         return car;
@@ -77,6 +81,7 @@ public class Rating extends ResourceSupport
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_uuid",
         foreignKey = @ForeignKey(name = "USER_UUID_FK"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public User getUser()
     {
         return user;

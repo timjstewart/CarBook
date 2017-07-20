@@ -6,7 +6,6 @@ import com.timjstewart.repository.CarRepository;
 import com.timjstewart.repository.RatingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,10 +38,14 @@ public class CarController
 
     private static Logger LOG = LoggerFactory.getLogger(CarController.class);
 
-    @Autowired
-    private CarRepository repository;
-    @Autowired
-    private RatingRepository ratingRepository;
+    private final CarRepository repository;
+    private final RatingRepository ratingRepository;
+
+    protected CarController(final CarRepository carRepository, final RatingRepository ratingRepository)
+    {
+        this.repository = carRepository;
+        this.ratingRepository = ratingRepository;
+    }
 
     @RequestMapping(path = ROUTE_COLLECTIVE, method = RequestMethod.GET)
     public Page<RatedCar> getMany(@RequestParam(name = "year", required = false) Integer year,
@@ -131,5 +134,3 @@ public class CarController
         return responseHeaders;
     }
 }
-
-

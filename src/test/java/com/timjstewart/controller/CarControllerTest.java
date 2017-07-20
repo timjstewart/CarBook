@@ -9,7 +9,6 @@ import com.timjstewart.repository.RatingRepository;
 import com.timjstewart.repository.UserRepository;
 import com.timjstewart.utility.CarPage;
 import com.timjstewart.utility.RatedCarPage;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

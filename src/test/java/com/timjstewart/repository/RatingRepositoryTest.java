@@ -3,12 +3,11 @@ package com.timjstewart.repository;
 import com.timjstewart.domain.Car;
 import com.timjstewart.domain.Rating;
 import com.timjstewart.domain.User;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,7 +79,7 @@ public class RatingRepositoryTest
         assertThat(foundRating).isNull();
     }
 
-    @Test(expected = java.lang.Exception.class)
+    @Test(expected = DataIntegrityViolationException.class)
     public void cannotDoubleRate()
     {
         // Arrange
@@ -97,5 +96,44 @@ public class RatingRepositoryTest
         invalidRating.setCar(car);
         invalidRating.setUser(user);
         repository.save(invalidRating);
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void carIsRequired()
+    {
+        // Arrange
+        final User user = userRepository.save(new User("Tim"));
+        final Rating validRating = new Rating(5);
+        validRating.setUser(user);
+
+        // Act
+        repository.save(validRating);
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void userIsRequired()
+    {
+        // Arrange
+        final Car car = carRepository.save(new Car(1932, "VW"));
+        final Rating validRating = new Rating(5);
+        validRating.setCar(car);
+
+        // Act
+        repository.save(validRating);
+    }
+
+    @Test
+    public void canDeleteCarWithRating()
+    {
+        // Arrange
+        final Car car = carRepository.save(new Car(1932, "VW"));
+        final User user = userRepository.save(new User("Tim"));
+
+        final Rating validRating = new Rating(5);
+        validRating.setCar(car);
+        validRating.setUser(user);
+        repository.save(validRating);
+
+        carRepository.delete(car.getUuid());
     }
 }
