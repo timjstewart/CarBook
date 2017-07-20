@@ -14,7 +14,7 @@ import java.util.UUID;
 @Table(name = "users")
 public class User extends ResourceSupport
 {
-    UUID uuid;
+    private UUID uuid;
     private String name;
 
     protected User()

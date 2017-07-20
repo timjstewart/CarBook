@@ -7,16 +7,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @Table(name = "cars")
 public class Car extends ResourceSupport
 {
-    UUID uuid;
+    private UUID uuid;
     private String make;
     private int year;
+    private Date createdAt;
+    private Date modifiedAt;
 
     protected Car()
     {
@@ -62,6 +69,42 @@ public class Car extends ResourceSupport
     public void setYear(int year)
     {
         this.year = year;
+    }
+
+    @Column(name = "createdAt", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getCreatedAt()
+    {
+        return createdAt;
+    }
+
+    public void setCreatedAt(final Date createdAt)
+    {
+        this.createdAt = createdAt;
+    }
+
+    @Column(name = "modifiedAt", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getModifiedAt()
+    {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(final Date modifiedAt)
+    {
+        this.modifiedAt = modifiedAt;
+    }
+
+    @PrePersist
+    protected void onCreate()
+    {
+        createdAt = modifiedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate()
+    {
+        modifiedAt = new Date();
     }
 }
 

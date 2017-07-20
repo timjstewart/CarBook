@@ -47,8 +47,8 @@ public class RatingControllerTest
 
         // Assert
         assertThat(found).isNotNull();
-        assertThat(found.getCar().getMake()).isEqualTo("Honda");
-        assertThat(found.getCar().getYear()).isEqualTo(1984);
+        assertThat(found.getStars()).isEqualTo(3);
+        // Not asserting on Car or User properties due to lazy fetching outside of the session.
     }
 
     @Test

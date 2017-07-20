@@ -6,6 +6,7 @@ import com.timjstewart.domain.User;
 import com.timjstewart.repository.CarRepository;
 import com.timjstewart.repository.RatingRepository;
 import com.timjstewart.repository.UserRepository;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,9 @@ public class RatingController
 
     private static Logger LOG = LoggerFactory.getLogger(RatingController.class);
 
-    private RatingRepository repository;
-    private CarRepository carRepository;
-    private UserRepository userRepository;
+    private final RatingRepository repository;
+    private final CarRepository carRepository;
+    private final UserRepository userRepository;
 
     protected RatingController(
         final RatingRepository repository,
@@ -62,6 +63,8 @@ public class RatingController
     public HttpEntity<Rating> getOne(@PathVariable UUID carId, @PathVariable UUID userId)
     {
         final Rating rating = repository.findByCarUuidAndUserUuid(carId, userId);
+
+        Hibernate.initialize(rating);
         if (rating == null)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -33,7 +33,7 @@ public class UserController
 
     private static Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-    private UserRepository repository;
+    private final UserRepository repository;
 
     protected UserController(final UserRepository repository)
     {

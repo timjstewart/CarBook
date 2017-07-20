@@ -21,10 +21,9 @@ import java.util.UUID;
 @Table(name = "ratings", uniqueConstraints = @UniqueConstraint(columnNames = {
     "car_uuid", "user_uuid"
 }))
-
 public class Rating extends ResourceSupport
 {
-    UUID uuid;
+    private UUID uuid;
     private int stars;
     private Car car;
     private User user;
@@ -64,7 +63,7 @@ public class Rating extends ResourceSupport
         this.stars = stars;
     }
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "car_uuid",
         foreignKey = @ForeignKey(name = "CAR_UUID_FK"))
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -78,7 +77,7 @@ public class Rating extends ResourceSupport
         this.car = car;
     }
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_uuid",
         foreignKey = @ForeignKey(name = "USER_UUID_FK"))
     @OnDelete(action = OnDeleteAction.CASCADE)
