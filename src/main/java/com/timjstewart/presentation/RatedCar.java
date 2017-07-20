@@ -1,6 +1,7 @@
-package com.timjstewart.domain;
+package com.timjstewart.presentation;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.timjstewart.domain.Car;
 
 public class RatedCar
 {

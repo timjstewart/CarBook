@@ -34,9 +34,9 @@ public class RatingControllerTest
     @After
     public void setUp()
     {
-//        repository.deleteAll();
-//        carRepository.deleteAll();
-//        userRepository.deleteAll();
+        repository.deleteAll();
+        carRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -108,6 +108,8 @@ public class RatingControllerTest
         User user = userRepository.save(new User("Bill"));
 
         final Rating rating = new Rating(3);
+        rating.setCar(car);
+        rating.setUser(user);
         final Rating created = repository.save(rating);
 
         // Act

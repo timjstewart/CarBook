@@ -1,7 +1,7 @@
 package com.timjstewart.controller;
 
 import com.timjstewart.domain.Car;
-import com.timjstewart.domain.RatedCar;
+import com.timjstewart.presentation.RatedCar;
 import com.timjstewart.repository.CarRepository;
 import com.timjstewart.repository.RatingRepository;
 import org.slf4j.Logger;

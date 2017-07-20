@@ -1,9 +1,9 @@
 package com.timjstewart.controller;
 
 import com.timjstewart.domain.Car;
-import com.timjstewart.domain.RatedCar;
 import com.timjstewart.domain.Rating;
 import com.timjstewart.domain.User;
+import com.timjstewart.presentation.RatedCar;
 import com.timjstewart.repository.CarRepository;
 import com.timjstewart.repository.RatingRepository;
 import com.timjstewart.repository.UserRepository;
@@ -41,6 +41,7 @@ public class CarControllerTest
     {
         ratingRepository.deleteAll();
         repository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
