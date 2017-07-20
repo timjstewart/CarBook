@@ -31,14 +31,6 @@ public class RatingControllerTest
     @Autowired
     private TestRestTemplate template;
 
-    @After
-    public void setUp()
-    {
-//        repository.deleteAll();
-//        carRepository.deleteAll();
-//        userRepository.deleteAll();
-    }
-
     @Test
     public void canCreateRating()
     {

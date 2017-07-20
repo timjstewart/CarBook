@@ -38,14 +38,6 @@ public class CarControllerTest
     @Autowired
     private TestRestTemplate template;
 
-    @Before
-    public void setUp()
-    {
-//        ratingRepository.deleteAll();
-//        repository.deleteAll();
-//        userRepository.deleteAll();
-    }
-
     @Test
     public void canCreateCar()
     {
