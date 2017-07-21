@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity
+@Entity()
 @Table(name = "cars")
 public class Car extends ResourceSupport
 {
